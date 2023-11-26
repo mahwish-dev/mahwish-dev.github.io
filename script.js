@@ -13,23 +13,30 @@ function getParameterByName(name, url) {
 var key = getParameterByName('key');
 console.log(key);
 
-// Your JSON data
-var jsonData = {
-    "invitees": {
-        "names": ["abc", "ganji chudail", "xyz"],
-        "adm_no": [39211, 69, 25717],
-        "section": ["B", "Z", "A"]
-    }
-};
+var jsonData; // Variable to hold JSON data
 
 // Function to find and display data based on the key
 function displayDetails(key) {
+    var xhr = new XMLHttpRequest();
+    xhr.overrideMimeType('application/json');
+    xhr.open('GET', 'data.json', true);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            jsonData = JSON.parse(xhr.responseText);
+            findAndDisplay(key);
+        }
+    };
+    xhr.send(null);
+}
+
+// Function to find and display data based on the key
+function findAndDisplay(key) {
     var index = jsonData.invitees.adm_no.indexOf(parseInt(key));
     if (index !== -1) {
         var name = jsonData.invitees.names[index];
         var admNo = jsonData.invitees.adm_no[index];
         var section = jsonData.invitees.section[index];
-        
+
         // Display the data on your subsite
         document.getElementById('name').innerText = "NAME: " + name.toUpperCase();
         document.getElementById('admNo').innerText = "TICKET NO: " + admNo;
