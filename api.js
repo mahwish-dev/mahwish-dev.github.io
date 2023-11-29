@@ -4,7 +4,7 @@ exports.handler = async (event, context) => {
       try {
         // Process the GET request as needed
         data = require('./data.json');
-  
+        console.log(data);
 
         // CORS
         const headers = {
