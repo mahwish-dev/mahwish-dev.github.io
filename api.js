@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
 
   exports.handler = async (event, context) => {
     // ...
-    console.log(event.httpMethod);
+    // console.log();
     // Add CORS headers
     const headers = {
       'Access-Control-Allow-Origin': '*', // Replace * with the appropriate domain
@@ -65,7 +65,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(data),
+      body: JSON.stringify(event.httpMethod),
     };
   
     // ...
