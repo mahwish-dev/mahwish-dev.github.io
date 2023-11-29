@@ -50,6 +50,7 @@ function updateSeat(key) {
 
             if (index !== -1) {
                 tempJsonData.invitees.seat[index] = seatNumber;
+                console.log(JSON.stringify(tempJsonData));
 
                 return fetch(url, {
                     method: 'POST',
