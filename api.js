@@ -1,5 +1,5 @@
 
-exports.handler = (event, context, callback) => {
+exports.handler = async (event, context, callback) => {
     if (event.httpMethod == 'GET') {
       try {
         // Process the GET request as needed
@@ -38,7 +38,7 @@ exports.handler = (event, context, callback) => {
     }
   };
 
-  exports.handler = (event, context, callback) => {
+  exports.handler = async (event, context, callback) => {
     if (event.httpMethod == 'POST') {
       try {
         // Parse the incoming JSON payload from the request body
