@@ -12,11 +12,12 @@ function getParameterByName(name, url) {
 var key = getParameterByName('key');
 console.log(key);
 
+var url = 'data.json';
 var jsonData; // Variable to hold JSON data
 
 // Function to find and display data based on the key
 function displayDetails(key) {
-    fetch('data.json')
+    fetch(url)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -35,7 +36,7 @@ function displayDetails(key) {
 }
 
 function updateSeat(key) {
-    fetch('https://65673bc405fd5e144c2cc886--musical-basbousa-d62dc7.netlify.app/.netlify/functions/api')
+    fetch(url)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -50,7 +51,7 @@ function updateSeat(key) {
             if (index !== -1) {
                 tempJsonData.invitees.seat[index] = seatNumber;
 
-                return fetch('https://65673bc405fd5e144c2cc886--musical-basbousa-d62dc7.netlify.app/.netlify/functions/api', {
+                return fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=UTF-8'
