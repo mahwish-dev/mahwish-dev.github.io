@@ -3,8 +3,17 @@ exports.handler = async (event, context) => {
     if (event.httpMethod == 'GET') {
       try {
         // Process the GET request as needed
+        try{
         data = require('./data.json');
-        console.log(data);
+        }
+        catch(e){
+            return {
+                statusCode: 500,
+                headers,
+                body: {message: e.toString()},
+              };
+        }
+
 
         // CORS
         const headers = {
