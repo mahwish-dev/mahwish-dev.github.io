@@ -1,4 +1,3 @@
-// Function to get URL parameter by name
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, '\\$&');
@@ -17,85 +16,63 @@ var jsonData; // Variable to hold JSON data
 
 // Function to find and display data based on the key
 function displayDetails(key) {
-    var xhr = new XMLHttpRequest();
-    xhr.overrideMimeType('application/json');
-    xhr.open('GET', 'data.json', true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            jsonData = JSON.parse(xhr.responseText);
+    fetch('data.json')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch JSON data');
+            }
+        })
+        .then(data => {
+            jsonData = data;
             updateSeat(key);
             findAndDisplay(key);
-        }
-    };
-    xhr.send(null);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
 function updateSeat(key) {
-    // Create a new XMLHttpRequest object
-var xhr = new XMLHttpRequest();
+    fetch('https://65673bc405fd5e144c2cc886--musical-basbousa-d62dc7.netlify.app/.netlify/functions/api')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch JSON data');
+            }
+        })
+        .then(tempJsonData => {
+            var index = tempJsonData.invitees.adm_no.indexOf(parseInt(key));
+            var seatNumber = tempJsonData.currentSeatIdx;
 
-// Define the file URL
-var url = 'https://mahwish-dev.github.io/data.json';
+            if (index !== -1) {
+                tempJsonData.invitees.seat[index] = seatNumber;
 
-// Open a GET request to fetch the existing JSON data
-xhr.open('GET', url, true);
-
-// Set the responseType to 'json' for proper handling
-xhr.responseType = 'json';
-
-// Send the GET request
-xhr.send();
-
-// When the request is complete
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === XMLHttpRequest.DONE) {
-    if (xhr.status === 200) {
-
-        
-        // Get the existing JSON data
-        var tempJsonData = xhr.response;
-        var index = tempJsonData.invitees.adm_no.indexOf(parseInt(key));
-      
-        // get current seat
-        var seatNumber = tempJsonData.currentSeatIdx;
-
-         // Update the specific value 
-        tempJsonData.invitees.seat[index] = seatNumber; // Set the new value here
-
-        // Convert the updated JSON data to a string
-        var updatedJsonString = JSON.stringify(tempJsonData);
-
-        // Create another XMLHttpRequest for writing the updated JSON back to the file
-        var xhrWrite = new XMLHttpRequest();
-
-        // Open a POST request to write the updated JSON data
-        xhrWrite.open('POST', url, true);
-
-        // Set the Content-Type header
-        xhrWrite.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-
-        // Send the updated JSON data
-        xhrWrite.send(updatedJsonString);
-        
-        // When the write request is complete
-        xhrWrite.onreadystatechange = function() {
-            if (xhrWrite.readyState === XMLHttpRequest.DONE) {
-            if (xhrWrite.status === 200) {
+                return fetch('https://65673bc405fd5e144c2cc886--musical-basbousa-d62dc7.netlify.app/.netlify/functions/api', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8'
+                    },
+                    body: JSON.stringify(tempJsonData)
+                });
+            } else {
+                throw new Error('Key not found');
+            }
+        })
+        .then(response => {
+            if (response.ok) {
                 console.log('JSON file updated successfully!');
             } else {
-                console.log('Error updating JSON file');
+                throw new Error('Error updating JSON file');
             }
-            }
-        };
-        } else {
-        console.log('Failed to fetch JSON data');
-        }
-    }
-};
-
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
 }
 
-// Function to find and display data based on the key
 function findAndDisplay(key) {
     var index = jsonData.invitees.adm_no.indexOf(parseInt(key));
     if (index !== -1) {
