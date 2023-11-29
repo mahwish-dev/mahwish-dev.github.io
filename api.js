@@ -1,5 +1,5 @@
 
-exports.handler = async (event, context) => {
+exports.handler = (event, context, callback) => {
     if (event.httpMethod == 'GET') {
       try {
         // Process the GET request as needed
@@ -22,23 +22,23 @@ exports.handler = async (event, context) => {
           };
 
         // Return the data as the response
-        return {
+        callback(null,  {
           statusCode: 200,
           headers,
           body: JSON.stringify(data),
-        };
+        });
       } catch (error) {
         // Return an error response if there was an issue processing the request
-        return {
+        callback(null,  {
           statusCode: 500,
           headers,
           body: JSON.stringify({ error: 'Failed to process GET request' }),
-        };
+        });
       }
     }
   };
 
-  exports.handler = async (event, context) => {
+  exports.handler = (event, context, callback) => {
     if (event.httpMethod == 'POST') {
       try {
         // Parse the incoming JSON payload from the request body
@@ -63,18 +63,18 @@ exports.handler = async (event, context) => {
         });
   
         // Return a success response
-        return {
+        callback(null,  {
           statusCode: 200,
           headers,
           body: JSON.stringify({ message: 'POST request processed successfully' }),
-        };
+        });
       } catch (error) {
         // Return an error response if there was an issue processing the request
-        return {
+        callback(null,  {
           statusCode: 400,
           headers,
           body: JSON.stringify({ error: 'Failed to process POST request' }),
-        };
+        });
       }
     }
   };
