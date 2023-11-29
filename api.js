@@ -4,7 +4,7 @@ exports.handler = async (event, context) => {
       try {
         // Process the GET request as needed
         try{
-        data = require('./data.json');
+        data = require('data.json');
         }
         catch(e){
             return {
