@@ -3,7 +3,7 @@ exports.handler = async (event, context) => {
     if (event.httpMethod === 'GET') {
       try {
         // Process the GET request as needed
-        const data = require('./data.json');
+        data = require('./data.json');
   
         // Return the data as the response
         return {
@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
 
   exports.handler = async (event, context) => {
     // ...
-  
+    console.log(event.httpMethod);
     // Add CORS headers
     const headers = {
       'Access-Control-Allow-Origin': '*', // Replace * with the appropriate domain
