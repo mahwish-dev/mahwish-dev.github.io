@@ -1,18 +1,10 @@
 
-exports.handler = async (event, context, callback) => {
+exports.handler = async (event, context) => {
     if (event.httpMethod == 'GET') {
       try {
         // Process the GET request as needed
-        try{
-        data = require('./data.json');
-        }
-        catch(e){
-            return {
-                statusCode: 500,
-                headers,
-                body: {message: e.toString()},
-              };
-        }
+        // Process the GET request as needed
+      let data = require('./db.json');
 
 
         // CORS
@@ -22,27 +14,27 @@ exports.handler = async (event, context, callback) => {
           };
 
         // Return the data as the response
-        callback(null,  {
+        return {
           statusCode: 200,
           headers,
           body: JSON.stringify(data),
-        });
+        };
       } catch (error) {
         // Return an error response if there was an issue processing the request
-        callback(null,  {
+        return {
           statusCode: 500,
           headers,
           body: JSON.stringify({ error: 'Failed to process GET request' }),
-        });
+        };
       }
     }
   };
 
-  exports.handler = async (event, context, callback) => {
+  exports.handler = async (event, context) => {
     if (event.httpMethod == 'POST') {
       try {
         // Parse the incoming JSON payload from the request body
-        const requestBody = JSON.parse(event.body);
+        let requestBody = JSON.parse(event.body);
         
         // Add CORS headers
     const headers = {
@@ -63,18 +55,18 @@ exports.handler = async (event, context, callback) => {
         });
   
         // Return a success response
-        callback(null,  {
+        return {
           statusCode: 200,
           headers,
-          body: JSON.stringify({ message: 'POST request processed successfully' }),
-        });
+          body: JSON.stringify(data),
+        };
       } catch (error) {
         // Return an error response if there was an issue processing the request
-        callback(null,  {
+        return {
           statusCode: 400,
           headers,
           body: JSON.stringify({ error: 'Failed to process POST request' }),
-        });
+        }
       }
     }
   };
